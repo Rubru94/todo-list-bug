@@ -2,6 +2,7 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from '../entities/task.entity';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { EditTaskDto } from './dto/edit-task.dto';
 
 @Injectable()
@@ -35,6 +36,21 @@ export class TasksService {
 
         this.logger.log(`Retrieved task: ${id} for user: ${userId}`);
         return task;
+    }
+
+    async createTask(
+        createTaskDto: CreateTaskDto,
+        userId: string,
+    ): Promise<Task> {
+        const task = this.tasksRepository.create({
+            ...createTaskDto,
+            owner: { id: userId },
+        });
+
+        const savedTask = await this.tasksRepository.save(task);
+
+        this.logger.log(`Created task: ${savedTask.id} for user: ${userId}`);
+        return savedTask;
     }
 
     async editTask(

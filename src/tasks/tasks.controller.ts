@@ -28,6 +28,14 @@ export class TasksController {
         return this.tasksService.getTask(id, req.user.id);
     }
 
+    @Post()
+    async createTask(
+        @Body() createTaskDto: CreateTaskDto,
+        @Request() req,
+    ): Promise<Task> {
+        return this.tasksService.createTask(createTaskDto, req.user.id);
+    }
+
     @Post('/edit')
     async editTask(
         @Body() editTaskDto: EditTaskDto,
