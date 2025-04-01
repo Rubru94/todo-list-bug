@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UnauthorizedException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { UsersService } from '../users/users.service';
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
     let service: AuthService;
@@ -13,18 +13,8 @@ describe('AuthService', () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 AuthService,
-                {
-                    provide: UsersService,
-                    useValue: {
-                        findOne: jest.fn(),
-                    },
-                },
-                {
-                    provide: JwtService,
-                    useValue: {
-                        signAsync: jest.fn(),
-                    },
-                },
+                { provide: UsersService, useValue: { findOne: jest.fn() } },
+                { provide: JwtService, useValue: { signAsync: jest.fn() } },
             ],
         }).compile();
 
@@ -33,12 +23,12 @@ describe('AuthService', () => {
         jwtService = module.get<JwtService>(JwtService);
     });
 
-    it('should throw UnauthorizedException if user is not found', async () => {
+    it('should throw NotFoundException if user is not found', async () => {
         jest.spyOn(usersService, 'findOne').mockResolvedValue(null);
 
         await expect(
             service.signIn('test@example.com', 'password'),
-        ).rejects.toThrow(UnauthorizedException);
+        ).rejects.toThrow(NotFoundException);
     });
 
     it('should throw UnauthorizedException if password is incorrect', async () => {
