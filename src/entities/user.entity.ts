@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Task } from './task.entity';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 
 @Entity('users')
 export class User {
@@ -18,4 +19,10 @@ export class User {
 
     @OneToMany(() => Task, (task) => task.owner)
     tasks: Task[];
+
+    constructor(createUserDto?: CreateUserDto) {
+        this.email = createUserDto?.email;
+        this.pass = createUserDto?.pass;
+        this.fullname = createUserDto?.fullname;
+    }
 }
