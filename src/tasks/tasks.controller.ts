@@ -11,31 +11,31 @@ export class TasksController {
     constructor(private readonly tasksService: TasksService) {}
 
     @Get()
-    async listTasks(@GetUser('id') userId: string): Promise<Task[]> {
-        return this.tasksService.listTasks(userId);
+    async listAll(@GetUser('id') userId: string): Promise<Task[]> {
+        return this.tasksService.listAll(userId);
     }
 
     @Get('/:id')
-    async getTask(
+    async getById(
         @Param('id') id: string,
         @GetUser('id') userId: string,
     ): Promise<Task> {
-        return this.tasksService.getTask(id, userId);
+        return this.tasksService.getById(id, userId);
     }
 
     @Post()
-    async createTask(
+    async create(
         @Body() createTaskDto: CreateTaskDto,
         @GetUser('id') userId: string,
     ): Promise<Task> {
-        return this.tasksService.createTask(createTaskDto, userId);
+        return this.tasksService.create(createTaskDto, userId);
     }
 
     @Post('/edit')
-    async editTask(
+    async edit(
         @Body() editTaskDto: EditTaskDto,
         @GetUser('id') userId: string,
     ): Promise<Task> {
-        return this.tasksService.editTask(editTaskDto, userId);
+        return this.tasksService.edit(editTaskDto, userId);
     }
 }

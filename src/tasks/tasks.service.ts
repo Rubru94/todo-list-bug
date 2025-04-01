@@ -17,7 +17,7 @@ export class TasksService {
         private readonly tasksRepository: Repository<Task>,
     ) {}
 
-    async listTasks(userId: string): Promise<Task[]> {
+    async listAll(userId: string): Promise<Task[]> {
         const tasks = await this.tasksRepository.find({
             where: { owner: { id: userId } },
         });
@@ -26,7 +26,7 @@ export class TasksService {
         return tasks;
     }
 
-    async getTask(id: string, userId: string): Promise<Task> {
+    async getById(id: string, userId: string): Promise<Task> {
         const task = await this.tasksRepository
             .createQueryBuilder('task')
             .leftJoinAndSelect('task.owner', 'owner')
@@ -48,10 +48,7 @@ export class TasksService {
         return task;
     }
 
-    async createTask(
-        createTaskDto: CreateTaskDto,
-        userId: string,
-    ): Promise<Task> {
+    async create(createTaskDto: CreateTaskDto, userId: string): Promise<Task> {
         const task = this.tasksRepository.create({
             ...createTaskDto,
             owner: { id: userId },
@@ -63,14 +60,11 @@ export class TasksService {
         return savedTask;
     }
 
-    async editTask(
-        { id, ...rest }: EditTaskDto,
-        userId: string,
-    ): Promise<Task> {
-        await this.getTask(id, userId);
+    async edit({ id, ...rest }: EditTaskDto, userId: string): Promise<Task> {
+        await this.getById(id, userId);
         await this.tasksRepository.update(id, rest);
 
-        const editedTask = await this.getTask(id, userId);
+        const editedTask = await this.getById(id, userId);
 
         this.logger.log(`Edited task: ${editedTask.id} for user: ${userId}`);
         return editedTask;

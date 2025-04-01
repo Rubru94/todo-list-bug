@@ -45,7 +45,7 @@ describe('TasksService', () => {
         expect(service).toBeDefined();
     });
 
-    describe('listTasks', () => {
+    describe('listAll', () => {
         const userId = '1';
 
         it('should return an array of tasks for the given user', async () => {
@@ -71,7 +71,7 @@ describe('TasksService', () => {
                 tasks as Task[],
             );
 
-            const result = await service.listTasks(userId);
+            const result = await service.listAll(userId);
 
             expect(result).toEqual(tasks);
             expect(tasksRepository.find).toHaveBeenCalledWith({
@@ -85,7 +85,7 @@ describe('TasksService', () => {
                 tasks as Task[],
             );
 
-            const result = await service.listTasks(userId);
+            const result = await service.listAll(userId);
 
             expect(result).toEqual(tasks);
             expect(tasksRepository.find).toHaveBeenCalledWith({
@@ -94,7 +94,7 @@ describe('TasksService', () => {
         });
     });
 
-    describe('getTask', () => {
+    describe('getById', () => {
         let spyGetOne: jest.SpyInstance;
         let mockTask: Task;
 
@@ -113,7 +113,7 @@ describe('TasksService', () => {
         it('should return the task if user is the owner', async () => {
             spyGetOne.mockResolvedValue(mockTask);
 
-            const result = await service.getTask('1', 'user1');
+            const result = await service.getById('1', 'user1');
 
             expect(tasksRepository.createQueryBuilder).toHaveBeenCalled();
             expect(result).toEqual(mockTask);
@@ -122,7 +122,7 @@ describe('TasksService', () => {
         it('should throw a NotFoundException if task is not found', async () => {
             spyGetOne.mockResolvedValue(null);
 
-            await expect(service.getTask('1', 'user1')).rejects.toThrow(
+            await expect(service.getById('1', 'user1')).rejects.toThrow(
                 NotFoundException,
             );
         });
@@ -130,7 +130,7 @@ describe('TasksService', () => {
         it('should throw a UnauthorizedException if task owner is invalid', async () => {
             spyGetOne.mockResolvedValue(mockTask);
 
-            await expect(service.getTask('1', 'user2')).rejects.toThrow(
+            await expect(service.getById('1', 'user2')).rejects.toThrow(
                 UnauthorizedException,
             );
         });
@@ -148,7 +148,7 @@ describe('TasksService', () => {
         mockTaskRepository.create.mockReturnValue(task);
         mockTaskRepository.save.mockResolvedValue(savedTask);
 
-        const result = await service.createTask(createTaskDto, userId);
+        const result = await service.create(createTaskDto, userId);
 
         expect(result).toEqual(savedTask);
         expect(mockTaskRepository.create).toHaveBeenCalledWith({
@@ -164,15 +164,15 @@ describe('TasksService', () => {
             owner: { id: 'user1' },
             title: 'Updated Task',
         };
-        jest.spyOn(service, 'getTask').mockResolvedValue(mockTask as Task);
+        jest.spyOn(service, 'getById').mockResolvedValue(mockTask as Task);
 
-        const result = await service.editTask(
+        const result = await service.edit(
             { id: '1', title: 'Updated Task' },
             'user1',
         );
 
         expect(result).toEqual(mockTask);
-        expect(service.getTask).toHaveBeenCalledTimes(2);
+        expect(service.getById).toHaveBeenCalledTimes(2);
         expect(tasksRepository.update).toHaveBeenCalledWith('1', {
             title: 'Updated Task',
         });
