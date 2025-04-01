@@ -1,6 +1,12 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import {
+    Injectable,
+    Logger,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../users/users.service';
+import { AuthenticatedUserDto } from './dto/authenticated-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,25 +17,31 @@ export class AuthService {
         private jwtService: JwtService,
     ) {}
 
-    async signIn(email: string, pass: string): Promise<any> {
-        const user = await this.usersService.findOne(email);
+    async signIn(mail: string, pass: string): Promise<AuthenticatedUserDto> {
+        const user = await this.usersService.findOne(mail);
+
+        const emailNotFoundMsg = `User with email ${mail} not found`;
+        const passNotFoundMsg = `Invalid password for user with email ${mail}`;
 
         if (!user) {
-            this.logger.log(`User with email ${email} not found`);
-            throw new UnauthorizedException();
+            this.logger.error(emailNotFoundMsg);
+            throw new NotFoundException(emailNotFoundMsg);
         }
 
         if (user?.pass !== pass) {
-            this.logger.log(`Invalid password for user with email ${email}`);
-            throw new UnauthorizedException();
+            this.logger.error(passNotFoundMsg);
+            throw new UnauthorizedException(passNotFoundMsg);
         }
 
-        const payload = { id: user.id, email: user.email };
+        const { id, email } = user;
+
+        this.logger.log(`User ${email} logged successfully`);
 
         return {
-            access_token: await this.jwtService.signAsync(payload, {
-                expiresIn: '1h',
-            }),
+            access_token: await this.jwtService.signAsync(
+                { id, email },
+                { expiresIn: '1h' },
+            ),
         };
     }
 }
