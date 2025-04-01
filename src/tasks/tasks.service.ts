@@ -1,4 +1,9 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+    Injectable,
+    Logger,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from '../entities/task.entity';
@@ -25,14 +30,20 @@ export class TasksService {
     async getTask(id: string, userId: string): Promise<Task> {
         const task = await this.tasksRepository
             .createQueryBuilder('task')
-            .where(`task.id = "${id}"`)
-            .andWhere(`task.owner.id = "${userId}"`)
+            .leftJoinAndSelect('task.owner', 'owner')
+            .where('task.id = :id', { id })
             .getOne();
 
-        if (!task)
+        if (!task) throw new NotFoundException('Task id does not exist');
+
+        const { owner } = task;
+        if (owner.id !== userId)
             throw new UnauthorizedException(
-                'You do not have permissions for this task or task does not exist',
+                'You do not have permissions for this task',
             );
+        // Remove owner property from task object for this specific case
+        // other solution could be to use a type Omit<Task, 'owner'>
+        delete task.owner;
 
         this.logger.log(`Retrieved task: ${id} for user: ${userId}`);
         return task;
