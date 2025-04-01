@@ -1,0 +1,225 @@
+{
+	"info": {
+		"_postman_id": "96c6bd38-32ba-425a-bbfe-fac3def87d69",
+		"name": "todo-list-bug",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9561143"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ned@example.com\",\n    \"fullname\": \"Test User\",\n    \"pass\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tasks",
+			"item": [
+				{
+					"name": "Get all tasks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFhNTlmM2JjLWRkNmQtNGMzOC05ODRiLTAxNGQ2NGQ2OWFhNiIsImVtYWlsIjoiZW1pbGlhX3BhcnJhZ3JpZWdvQHlhaG9vLmNvbSIsImlhdCI6MTc0MzUzOTM5MSwiZXhwIjoxNzQzNTQyOTkxfQ.sE4vE6dRtDm6M9wxV5iXWI_dRLnTa9L_6seZms-GX9E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get task by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyZDBlMzY1LTk2NDYtNDhhYi05ZmE0LTJmZjQ5OTM4ZmQyMSIsImVtYWlsIjoiYXJtYW5kby50b3ZhcmF2aWxhQHlhaG9vLmNvbSIsImlhdCI6MTc0MzUzOTI2OSwiZXhwIjoxNzQzNTQyODY5fQ.-bIjBL5gCglkaTFKpa7Kf5CxGsznTNnquUzJMEz-pn0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/tasks/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tasks",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "8927d381-a3f2-4507-84eb-934aadd819de"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyZDBlMzY1LTk2NDYtNDhhYi05ZmE0LTJmZjQ5OTM4ZmQyMSIsImVtYWlsIjoiYXJtYW5kby50b3ZhcmF2aWxhQHlhaG9vLmNvbSIsImlhdCI6MTc0MzUzOTI2OSwiZXhwIjoxNzQzNTQyODY5fQ.-bIjBL5gCglkaTFKpa7Kf5CxGsznTNnquUzJMEz-pn0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"8927d381-a3f2-4507-84eb-934aadd819de\",\n    \"title\": \"tamisium vere debitis updated\",\n    \"description\": \"Incidunt crudelis caritas abbas doloribus tamquam stella arguo arma virtus.\",\n    \"done\": true,\n    \"dueDate\": \"2025-07-11 20:42:37.263\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/tasks/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tasks",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyZDBlMzY1LTk2NDYtNDhhYi05ZmE0LTJmZjQ5OTM4ZmQyMSIsImVtYWlsIjoiYXJtYW5kby50b3ZhcmF2aWxhQHlhaG9vLmNvbSIsImlhdCI6MTc0MzUzOTI2OSwiZXhwIjoxNzQzNTQyODY5fQ.-bIjBL5gCglkaTFKpa7Kf5CxGsznTNnquUzJMEz-pn0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"new created\",\n    \"description\": \"Incidunt crudelis caritas abbas doloribus tamquam stella arguo arma virtus.\",\n    \"done\": true,\n    \"dueDate\": \"2025-07-11 20:42:37.263\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"emilia_parragriego@yahoo.com\",\n    \"pass\": \"9fKJI_yi53eDxFB\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
