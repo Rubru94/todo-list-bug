@@ -1,9 +1,8 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { GetUser } from '../auth/decorators/get-user.decorator';
-import { Task } from '../entities/task.entity';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { EditTaskDto } from './dto/edit-task.dto';
+import { CreateTaskDto, EditTaskDto } from './dto';
+import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')

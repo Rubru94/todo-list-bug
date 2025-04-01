@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Task } from './task.entity';
-import { CreateUserDto } from '../users/dto/create-user.dto';
+import { Task } from '../../tasks/entities/task.entity';
+import { CreateUserDto } from '../dto/create-user.dto';
 
 @Entity('users')
 export class User {
